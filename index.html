@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Contratos de Matrícula</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+           @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('./images/banner.png');
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: linear-gradient(145deg, #00FA9A, #98FB98, #9ACD32);
+            padding: 20px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+           
+        }
+
+        .form-description {
+            background-color: #e1f5fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #0277bd;
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        label {
+            width: 100%;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        select {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:nth-of-type(odd),
+        input[type="email"]:nth-of-type(odd),
+        input[type="tel"]:nth-of-type(odd),
+        input[type="password"]:nth-of-type(odd),
+        select:nth-of-type(odd) {
+            margin-right: 20px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0288d1;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #20b955;
+        }
+
+        .submit-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .error-message {
+            width: 100%;
+            background-color: #ffcccb;
+            color: #d32f2f;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+            z-index: 1000; /* Garante que o botão está sobre outros elementos */
+        }
+
+        .whatsapp-button:hover {
+            background-color: #20b955;
+            transform: scale(1.1);
+        }
+
+        .whatsapp-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        @media (max-width: 600px) {
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="password"],
+            select {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .instructions {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #2196F3;
+        }
+        form label {
+            display: block;
+            margin-top: 10px;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gerador de Contratos de Matrícula</h2>
+        <div class="instructions">
+            <b>O administrador dos contratos deve preencher os dados do aluno no formulário e clicar em 'Gerar Contrato'. Em seguida, deve clicar em 'Baixar Contrato'</b>
+        </div>
+        <form id="matriculaForm">
+            <!-- Campos do formulário -->
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco">
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade">
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro">
+            <label for="estado">Estado:</label>
+            <input type="text" id="estado" name="estado">
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" name="cep">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="fone">Fone:</label>
+            <input type="tel" id="fone" name="fone" required>
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf" required>
+            <label for="rg">RG:</label>
+            <input type="text" id="rg" name="rg" required>
+            <!--<label for="login">Login:</label>
+            <input type="text" id="login" name="login" required>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>-->
+            <label for="modo">Modo:</label>
+            <select id="modo" name="modo" required>
+                <option value="">Selecione...</option>
+                <option value="presencial">Presencial</option>
+                <option value="online">Online</option>
+            </select>
+            <label for="cursos">Curso Escolhido:</label>
+            <select id="cursos" name="cursos" required>
+                <option value="">Selecione...</option>
+                <option value="CET - Curso Elementar de Teologia">Curso Elementar de Teologia</option>
+                 <option value="CTT - Curso Tecnico em Teologia">Curso Tecnico em Teologia</option>
+                 <option value="THB/LIC - Bacharel em Teologia">Bacharel em Teologia</option>
+                 <option value="MT - Mestrado em Teologia">Mestrado em Teologia</option>
+                 <option value="DT - Doutorado em Teolgia">Doutorado em Teologia</option>
+                <option value="MLA - Musica, Louvor e Adoração">Música, Louvor e Adoração</option>
+                <option value="CO - Curso de Oratoria">Curso de Oratória</option>
+                <option value="CGE - Curso de Gestão Eclesiástica">Curso de Gestão Eclesiástica</option>
+                <option value="CP - Curso de Capelania"> Curso de Capelania</option>
+            </select>
+            <!--<label for="igreja">Igreja:</label>
+            <input type="text" id="igreja" name="igreja">
+            <label for="funcao">Função:</label>
+            <input type="text" id="funcao" name="funcao">-->
+            <label for="pagamento">Método de Pagamento:</label>
+            <select id="pagamento" name="pagamento" required>
+                <option value="">Selecione...</option>
+                <option value="Pagamento via Mensalisade">Pagar Mensalmente</option>
+                <option value="Pagamento Único Pelo Curso">Pagar Única Vez</option>
+                <!--<option value="pix">PIX</option>-->
+            </select>
+            <!--<label for="valor">Valor (R$):</label>
+            <input type="text" id="valor" name="valor" required>-->
+
+            <div class="button-container">
+                <button type="button" class="btn-primary" onclick="gerarContrato()"><b>1° Gerar Contrato</b></button>
+                <button type="button" class="btn-secondary" onclick="baixarContrato()"><b>2° Baixar Contrato</b></button>
+                <!--<button type="button" class="btn-whatsapp" onclick="finalizarMatricula()"><b>Pagar Mensalmente</button>
+                <a href="https://itsteologia.lojavirtualnuvem.com.br/produtos/thb-lic-bacharel-em-teologia">
+                <button type="button" class="btn-tertiary"><b>Pagar Única Vez</b></button>
+                </a>-->
+            </div>
+        </form>
+    </div>
+    <script>
+        function validarFormulario() {
+            const form = document.getElementById('matriculaForm');
+            const camposObrigatorios = form.querySelectorAll('input[required], select[required]');
+            let valido = true;
+
+            camposObrigatorios.forEach((campo) => {
+                if (!campo.value) {
+                    valido = false;
+                    campo.style.borderColor = '#d32f2f';
+                } else {
+                    campo.style.borderColor = '#ccc';
+                }
+            });
+
+            return valido;
+        }
+
+        function gerarContrato() {
+            if (!validarFormulario()) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            const nome = document.getElementById('nome').value;
+            const endereco = document.getElementById('endereco').value;
+            const cidade = document.getElementById('cidade').value;
+            const bairro = document.getElementById('bairro').value;
+            const estado = document.getElementById('estado').value;
+            const cep = document.getElementById('cep').value;
+            const email = document.getElementById('email').value;
+            const fone = document.getElementById('fone').value;
+            const cpf = document.getElementById('cpf').value;
+            const rg = document.getElementById('rg').value;
+            const modo = document.getElementById('modo').value;
+            const cursos = document.getElementById('cursos').value;
+             const pagamento = document.getElementById('pagamento').value;
+            
+
+            const contrato = `
+                DADOS DO ALUNO
+                Nome Completo: ${nome}
+                CPF: ${cpf}
+                RG: ${rg}
+                Endereço: ${endereco}, ${bairro}, ${cidade}, ${estado} - ${cep}
+                E-mail: ${email}
+                Fone: ${fone}
+                Modo: ${modo}
+                Curso Escolhido: ${cursos}
+                Método de Pagamento: ${pagamento}
+                CONTRATO PARTICULAR DE PRESTAÇÃO DE SERVIÇOS
+1 – Objeto: O Objeto do presente instrumento é a contratação dos serviços do ITS – “Instituto Teológico 
+Shammah”, que se compromete a ministrar aulas de Teologia Sistemática, nos cursos de Teologia 
+Básica, Teologia Média, Bacharel em Teologia, Mestrado em Teologia, Doutorado em Teologia, 
+Doutorado em Divindade, Musica, Louvor e Adoração, Monoteísmo e Formação Ministerial, em 
+conformidade com o curso descrito acima, fornecendo para tanto todo o material didático necessário e 
+adequado á cada matéria, e alem do mais de acordo com a solicitação do aluno e pagamento à parte 
+fornecimento de credencial, o aluno receberá ao termino do curso o diploma de qualificação desde que 
+suas notas não sejam inferiores a 7 (sete).
+1.1 Todo aluno deverá receber material didático personalizado, não sendo permitido em hipótese 
+alguma o uso de xerox, ou qualquer outro meio, ficando a cargo do ITS – “Instituto Teológico 
+Shammah” isentar ou não o ALUNO do pagamento do mesmo.
+1.2 A carga horária dos cursos é livre uma vez que o sistema utilizado é o Home School, ou seja, a 
+escola na casa, onde o aluno escolhe estudar on-line ou via correios, uma vez escolhida a forma de 
+estudo qualquer troca de modalidade terá um custo de 5% do valor de uma parcela do curso.
+2. Dos valores e pagamentos: O preço dos serviços ora contratados, bem como o numero de parcelas e 
+datas de vencimento encontram-se descritos e especificados no quadro da folha 01, ficando facultado 
+ao aluno, o pagamento total antecipado, observadas as condições escolhidas no ato da assinatura do 
+presente contrato. Escolhida a modalidade do pagamento parcelado, serão emitidos 
+carnes/duplicatas/boletos bancários e guias de depósitos entregues ao aluno para pagamento nas datas 
+constantes no quadro acima acordado, diretamente no caixa do ITS – “Instituto Teológico Shammah” ou 
+ainda, em bancos indicados pelo ITS.
+2.1 O desconto promocional promovido pelo ITS – “Instituto Teológico Shammah” é concedido apenas 
+mediante à pontualidade nos pagamentos das parcelas descritas no quadro acima.
+3. Atraso no Pagamento e Multa: o atraso ou não pagamento das parcelas na forma e datas 
+convencionadas sujeitará o aluno ao pagamento de multa de 10% (dez por cento), sobre a importância 
+total e sem os descontos promocionais, sendo que o recebimento de determinada parcela não 
+significará quitação das anteriores. Em caso de mudança na política financeira nacional, convencionará 
+as partes que a presente clausula será revista e fixado um novo parâmetro para o calculo de juros.
+4. Responsabilidade Legal: Em caso de o aluno (qualificado no quadro acima) ser menor de idade, 
+assumirá todas as responsabilidades constantes neste quadro o pagador responsável indicado no 
+quadro acima.
+5.Tolerância e Tranca de matricula: a tolerância do ITS – “Instituto Teológico Shammah” no tocante aos 
+pagamentos, não implica em desistência das multas ora indicadas e na desistência do aluno, o aluno 
+sabe e entende que o não pagamento das mensalidades não o isenta do presente contrato, que não 
+tem vínculos com as matérias e sim vínculos entre o ITS e o aluno. No caso do curso de bacharel, 
+Mestrado ou Doutorado, o aluno poderá trancar a sua matricula por 6 (seis) meses uma única vez, tendo 
+notificado antecipadamente num período de 30 (trinta) dias, e pagando o pedido no valor de 15% da 
+parcela do curso.
+5.1 Especificando: O aluno deixará de receber as matérias se caso não efetuar os pagamentos devido, 
+mais não o isentará de cobrança judicial para o recebimento dos valores devido.
+6. Inadimplência: O aluno ou o responsável pelo pagamento, desde já, autoriza ao ITS – “Instituto 
+Teológico Shammah” em caso de inadimplência a emitir letra de cambio ou duplicata com vencimento 
+total à vista e enviar ao Cartório de Protesto, bem como proceder o registro do debito junto ao Serviço 
+de Proteção ao Credito –SPC, ficando a critério do ITS rescindir o presente contrato nos casos de 
+inadimplência superiores a 60 (sessenta) dias. Após os 60 (sessenta) dias o aluno será considerado 
+desligado do estudo mais não dos pagamentos, podendo em forma de acordo voltar a estudar. NOTA: 
+OS PAGAMENTOS NÃO ESTÃO ATRELADOS AO RECEBIMENTO DAS MATERIAS QUE SERÁ 
+SUSPENSA IMEDIATAMENTE AO NÃO PAGAMENTO, CABENDO ASSIM AÇÃO LEGAL POR PARTE 
+DO ITS CONTRA O ALUNO.
+7.Desistência: A desistência deverá ser solicitada pelo aluno por escrito, com 30(trinta) dias de 
+antecedência, condicionada ao pagamento das parcelas.
+8. Assistência ao Aluno: O ITS – “Instituto Teológico Shammah” se compromete a dar suporte 
+telefônico, on-line ou ainda assistir aos alunos em caso de dificuldades para solucionar as questões 
+referente a matéria estudada, também coloca através do seu site uma biblioteca onde o aluno poderá 
+realizar pesquisas fazer dowload dos livros, todo aluno do ITS – “Instituto Teológico Shammah” terá 
+acesso gratuito aos seminários, simpósios, palestras e outros eventos que o ITS realizar sem 
+pagamento de nenhuma taxa, ficando apenas a disposição do aluno a compra das eventuais apostilas.
+9.Danos: O aluno que danificar os materiais emprestados do ITS – “Instituto Teológico Shammah”ou de 
+alguma forma for identificado copias e pirataria do material do ITS, será excluído do curso e responderá 
+os meios de lei cabíveis em tal caso.
+10.Foro: Fica eleito de forma irrevogável e definitiva, o Fórum da comarca de Mogi das Cruzes para 
+dirimir quaisquer duvidas oriundas do presente contrato, em detrimento de qualquer outro por mais 
+privilegiado que seja.
+E por estarem justa e contratadas, as partes firmam o presente contrato em assinado a baixo:
+
+                Assinado por:
+                ITS - Instituto Teológico Shammah
+                Assinado por:
+                ${nome}
+            `;
+
+            localStorage.setItem('contrato', contrato);
+            alert('Contrato gerado com sucesso!');
+        }
+
+        function baixarContrato() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ format: 'A4' });
+
+            const contrato = localStorage.getItem('contrato');
+            if (!contrato) {
+                alert('Por favor, gere o contrato primeiro.');
+                return;
+            }
+
+            doc.setFontSize(12);
+            const linhas = contrato.split('\n');
+            let y = 10;
+            linhas.forEach((linha) => {
+                doc.text(linha, 10, y);
+                y += 10;
+            if (y > 280) {  // Se a página estiver cheia, adiciona uma nova página
+            doc.addPage();
+            y = 10;
+        }
+    });
+
+    doc.save('contrato.pdf');
+}
+
+        function finalizarMatricula() {
+           const nome = document.getElementById('nome').value;
+            const endereco = document.getElementById('endereco').value;
+            const cidade = document.getElementById('cidade').value;
+            const bairro = document.getElementById('bairro').value;
+            const estado = document.getElementById('estado').value;
+            const cep = document.getElementById('cep').value;
+            const email = document.getElementById('email').value;
+            const fone = document.getElementById('fone').value;
+            const cpf = document.getElementById('cpf').value;
+            const rg = document.getElementById('rg').value;
+            const modo = document.getElementById('modo').value;
+            const cursos = document.getElementById('cursos').value;
+             const pagamento = document.getElementById('pagamento').value;
+            
+
+            const mensagem = `
+                Nome Completo: ${nome}
+                CPF: ${cpf}
+                RG: ${rg}
+                Endereço: ${endereco}, ${bairro}, ${cidade}, ${estado} - ${cep}
+                E-mail: ${email}
+                Fone: ${fone}
+                Modo: ${modo}
+                Curso Escolhido: ${cursos}
+                Método de Pagamento: ${pagamento}
+               
+
+                Contrato de prestação de serviços educacionais firmado entre o ITS - Instituto Teológico Shammah, doravante denominado PRESTADOR e ${nome}, doravante denominado ALUNO.
+                O presente contrato tem por objeto a prestação de serviços educacionais na modalidade ${modo} com ênfase em ${cursos}, escolhido pelo ALUNO.
+                O ALUNO se compromete a efetuar o pagamento do valor do curso, na modalidade escolhida por ele. Opção de  pagamento escolhida: ${pagamento}.
+                Assinado por:
+                ITS - Instituto Teológico Shammah
+                Assinado por:
+                ${nome}
+                `;
+
+            const link = `https://wa.me/5541987997127?text=${encodeURIComponent('Sou novo aluno(a) e essa é a minha matrícula, eu desejo fazer o pagamento do curso mensalmente. ' + mensagem)}`;
+            window.open(link);
+        }
+    </script>
+</body>
+</html>
